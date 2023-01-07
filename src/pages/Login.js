@@ -1,7 +1,34 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
+
+
+
 const Login = (props) => {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [roll, setRoll] = useState();
+
+async function login()
+{
+console.log(email,password,roll)
+let item= {email, password,roll};
+let result = await fetch("https://snapbuy.onrender.com/shoppers/login", { 
+method: 'POST',
+headers: {
+    "Content-Type":"application/json",
+    "Accept" : 'application/json'
+},
+body:JSON.stringify(item)
+});
+result = await result.json();
+localStorage.setItem("user-info",JSON.stringify(result));
+
+
+
+
+
+}
   return (
     <div className="Auth-form-container">
       <form className="Auth-form">
@@ -13,6 +40,7 @@ const Login = (props) => {
               type="email"
               className="form-control mt-1"
               placeholder="Enter email"
+              onChange={(e)=>setEmail(e.target.value)}
             />
           </div>
           <div className="form-group mt-3">
@@ -21,10 +49,20 @@ const Login = (props) => {
               type="password"
               className="form-control mt-1"
               placeholder="Enter password"
+              onChange={(e)=>setPassword(e.target.value)}
+            />
+          </div>
+          <div className="form-group mt-3">
+            <label>Roll</label>
+            <input
+              type="text"
+              className="form-control mt-1"
+              placeholder="Enter Roll"
+              onChange={(e)=>setRoll(e.target.value)}
             />
           </div>
           <div className="d-grid gap-2 mt-3">
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary" onClick={login}>
               Submit
             </button>
           </div>

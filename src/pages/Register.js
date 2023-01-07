@@ -1,5 +1,9 @@
-import styled from "styled-components";
+
 import { mobile } from "../responsive";
+import "bootstrap/dist/css/bootstrap.min.css"
+import "react-credit-cards/es/styles-compiled.css";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   width: 100vw;
@@ -17,9 +21,14 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
-  width: 40%;
-  padding: 20px;
-  background-color: white;
+display: block;
+width: 450px;
+margin: auto;
+background: #fefefe;
+box-shadow: 0px 14px 80px rgb(34 35 58 / 20%);
+padding: 25px 30px;
+border-radius: 15px;
+transition: all 0.3s;
   ${mobile({ width: "75%" })}
 `;
 
@@ -35,9 +44,17 @@ const Form = styled.form`
 
 const Input = styled.input`
   flex: 1;
-  min-width: 40%;
+  background-color: #fff;
+  min-width: 100%;
+  border: 1px solid #ced4da;
   margin: 20px 10px 0px 0px;
-  padding: 10px;
+  padding: .375rem 0.75rem;
+  border-radius: 0.375rem;
+  appearance: none;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  &:Active {
+    border: 1px solid red;
+  }
 `;
 
 const Agreement = styled.span`
@@ -46,13 +63,21 @@ const Agreement = styled.span`
 `;
 
 const Button = styled.button`
-  width: 40%;
+  width: 100%;
   border: none;
-  padding: 15px 20px;
-  background-color: teal;
+  padding: 10px 20px;
+  background-color: #FF055F;
   color: white;
   cursor: pointer;
+  border-radius: 0.375rem;
 `;
+const linkStyle = {
+   
+  textDecoration: "none",
+  color:"white"
+  
+
+};
 
 const Register = () => {
   return (
@@ -70,7 +95,7 @@ const Register = () => {
             By creating an account, I consent to the processing of my personal
             data in accordance with the <b>PRIVACY POLICY</b>
           </Agreement>
-          <Button>CREATE</Button>
+          <Button><Link to="/MobileVerification" style={linkStyle}>CREATE</Link></Button>
         </Form>
       </Wrapper>
     </Container>
