@@ -1,6 +1,7 @@
 import styled from '@emotion/styled/macro';
 import { FavoriteBorderOutlined, SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material'
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 const Info = styled.div`
 opacity:0;
@@ -22,7 +23,9 @@ flex:1;
 margin:5px;
 min-widht:280px;
 height:350px;
+
 display:flex;
+
 align-items:center;
 justify-content:center;
 background-color:#f5fbfd;
@@ -69,15 +72,17 @@ const Product = ({item}) => {
   return (
     <Container>
         <Circle />
-        <Image src={item.img}/>
+        <Image src={item.image}/>
         <Info>
             <Icon>
                 <ShoppingCartOutlined/>
             </Icon>
           
+            <Link to={`/product/${item._id}`}>
             <Icon>
-                <SearchOutlined/>
-            </Icon>
+          <SearchOutlined />
+          </Icon>
+          </Link>
           
             <Icon>
                 <FavoriteBorderOutlined/>

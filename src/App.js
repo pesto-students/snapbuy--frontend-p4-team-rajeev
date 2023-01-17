@@ -6,32 +6,43 @@ import ProductList from "./pages/ProductList";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Cart from "./pages/Cart";
-import Testing from "./pages/Testing";
+
 import CardDetails from "./pages/CardDetails";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter ,
+
+  Route,
+ 
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import MobileVerification from "./pages/MobileVerification";
-import AccountSucess from "./pages/AccountSucess";
+import Success from "./pages/Sucess";
 import ForgotPass from "./pages/ForgotPass";
+import { useSelector } from "react-redux";
 
 function App() {
+  const user = useSelector((state) => state.user.currentUser);
   return (
 
     <div>
       
-    <BrowserRouter>
+      <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home />}/>
-        <Route path='/Product' element={<Product />}/>
-        <Route path='/ProductList' element={<ProductList />}/>
-        <Route path='/CardDetails' element={<CardDetails />}/>
-        <Route path='/Register' element={<Register />}/>
-        <Route path='/login' element={<Login />}/>
-        <Route path='/Cart' element={<Cart />}/>
-        <Route path='/login' element={<Login />}/>
-        <Route path='/MobileVerification' element={<MobileVerification />}/>
-        <Route path='/AccountSucess' element={<AccountSucess />}/>
-        <Route path='/Forgotpass' element={<ForgotPass />}/>
-       
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/product/:id" element={ <Product />} />
+        <Route path="/products/:category" element={<ProductList />} />
+        <Route path="Cart" element={<Cart />} />
+        <Route path="CardDetails" element={<CardDetails />} />
+        <Route path="MobileVerification" element={<MobileVerification />} />
+        <Route path="Success" element={<Success />} />
+        <Route path="ForgotPass" element={<ForgotPass />} />
+        <Route path="Login" element={user ? <Navigate replace to="/" /> : <Login/>} >
+
+          </Route>
+          <Route path="Register" element={user ? <Navigate replace to="/" /> : <Register />} ></Route>
+          
+        
       </Routes>
     </BrowserRouter>
 

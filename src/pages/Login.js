@@ -1,34 +1,41 @@
 import React, { useState } from 'react'
+
 import { Link } from 'react-router-dom'
+import { login } from '../redux/apiCalls';
+import { useDispatch, useSelector } from "react-redux";
+import {getUsers}  from '../redux/usersSlice';
 
 
 
 
 const Login = (props) => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [roll, setRoll] = useState();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [roll, setRoll] = useState("");
+  const dispatch = useDispatch();
+  const { isFetching, error } = useSelector((state) => state.users);
 
-async function login()
-{
-console.log(email,password,roll)
-let item= {email, password,roll};
-let result = await fetch("https://snapbuy.onrender.com/shoppers/login", { 
-method: 'POST',
-headers: {
-    "Content-Type":"application/json",
-    "Accept" : 'application/json'
-},
-body:JSON.stringify(item)
-});
-result = await result.json();
-localStorage.setItem("user-info",JSON.stringify(result));
-
-
-
-
-
+  // const initialValues={
+    // "email" : "harish2@gmail.com",
+    // "password" : "harish1",
+    // "role": "shopper"
+// }
+let initialValues={}
+const apicall=(e)=>{
+  e.preventDefault();
+ initialValues= {
+    "email" : username,
+    "password" : password,
+    "role": "shopper"
 }
+  console.log("Hello World",initialValues)
+  dispatch(getUsers(initialValues))
+}
+const handleClick = (e) => {
+  e.preventDefault();
+  console.log("Hello World",initialValues)
+  login(dispatch(initialValues))
+};
   return (
     <div className="Auth-form-container">
       <form className="Auth-form">
@@ -40,7 +47,7 @@ localStorage.setItem("user-info",JSON.stringify(result));
               type="email"
               className="form-control mt-1"
               placeholder="Enter email"
-              onChange={(e)=>setEmail(e.target.value)}
+              onChange={(e)=>setUsername(e.target.value)}
             />
           </div>
           <div className="form-group mt-3">
@@ -62,9 +69,10 @@ localStorage.setItem("user-info",JSON.stringify(result));
             />
           </div>
           <div className="d-grid gap-2 mt-3">
-            <button type="submit" className="btn btn-primary" onClick={login}>
+            <button type="submit" className="btn btn-primary" onClick={apicall} disabled={isFetching}>
               Submit
             </button>
+          
           </div>
           <p className="forgot-password text-right mt-2">
             Forgot <a href="#">password?</a>

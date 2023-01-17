@@ -5,6 +5,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { mobile } from '../responsive';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 // import Login from '../pages/Login';
 
 const Container = styled.div`
@@ -115,6 +116,8 @@ const MenuItems = styled.div`
   };
 
 function Navbar() {
+  const quantity = useSelector(state=>state.cart.quantity)
+ 
     
   return (
     <Container>
@@ -133,12 +136,14 @@ function Navbar() {
             
             <MenuItems2><Link to="/Login" style={linkStyleBtnLog}>LOG IN</Link></MenuItems2>
             <MenuItems1><Link to="/Register" style={linkStyleBtnReg}>REGISTER</Link></MenuItems1>
+            <Link to="/cart">
             <MenuItems>
-            <Badge badgeContent={4} color="secondary">
-            <Link to="/Cart" style={linkStyleBtnLog}> <ShoppingCartIcon /></Link>
+            <Badge badgeContent={quantity} color="secondary">
+            <ShoppingCartIcon />
       </Badge>
             
             </MenuItems>
+            </Link>
         </Right>
         </Wrapper>
        
