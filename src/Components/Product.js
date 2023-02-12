@@ -1,7 +1,9 @@
 import styled from '@emotion/styled/macro';
 import { FavoriteBorderOutlined, SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material'
 import React from 'react'
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { addToProduct } from '../redux/cartRedux';
 
 const Info = styled.div`
 opacity:0;
@@ -69,13 +71,20 @@ transition:all 0.5 ease;
 }
 `
 const Product = ({item}) => {
+  const dispatch = useDispatch();
+  const handleAddTOCart = (item) =>{
+    dispatch(
+      addToProduct(item)
+      
+    );
+  }
   return (
     <Container>
         <Circle />
         <Image src={item.image}/>
         <Info>
             <Icon>
-                <ShoppingCartOutlined/>
+                <ShoppingCartOutlined onClick={()=>handleAddTOCart(item)} />
             </Icon>
           
             <Link to={`/product/${item._id}`}>

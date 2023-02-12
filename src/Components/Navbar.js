@@ -1,11 +1,13 @@
 import { NoEncryption, Search } from '@mui/icons-material'
 import { Badge } from '@mui/material'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import React from 'react'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { mobile } from '../responsive';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTotals } from '../redux/cartRedux';
 // import Login from '../pages/Login';
 
 const Container = styled.div`
@@ -116,9 +118,58 @@ const MenuItems = styled.div`
   };
 
 function Navbar() {
-  const quantity = useSelector(state=>state.cart.quantity)
+  const { cartTotalQuantity } = useSelector((state) => state.cart);
+  const cart = useSelector((state) => state.cart);
+  const [user,setUser] = useState(false)
  
+  const navigate =useNavigate();
+  const rll = window.localStorage.getItem("user")
+  const cll = window.localStorage.getItem("")
+  const output = JSON.parse(rll)
+  const [sudo,setSudo] = useState('');
+  const [pageURL, setPageURL] = useState(window.location.href);
+  const [isDropdownOpend , setDropdownOpen ] = useState(false);
+  const [list , setList] = useState([1,2,3])
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+
+    if(rll !== cll){
+      setUser(true)
+      setSudo(output.firstname)
+    }
+
+  },[rll,cll]) 
+
+  useEffect(() => {
+   
+    dispatch(getTotals());
+  }, [cart, dispatch]);
+
+  // ============= drop down code start=====================
+  const toggleDropDown = () => setDropdownOpen(!isDropdownOpend)
+
+  const DropDownlist = () =>  list.map(el => <div>{el}</div>);
+
+
+  // ==========code end============
+
+
+
+
+
+
+  const handleRemove = () =>{
+    localStorage.removeItem('token')
+    localStorage.clear();
+    if(pageURL === 'http://localhost:3000/'){
+      window.location.reload(false);
+    }else{
+      navigate('/')
+    }
     
+    
+    }
   return (
     <Container>
         <Wrapper>
@@ -134,11 +185,15 @@ function Navbar() {
         </Center>
         <Right>
             
-            <MenuItems2><Link to="/Login" style={linkStyleBtnLog}>LOG IN</Link></MenuItems2>
-            <MenuItems1><Link to="/Register" style={linkStyleBtnReg}>REGISTER</Link></MenuItems1>
+        {user ?<> <p><AccountCircleIcon />  {sudo} </p> <MenuItems1 onClick={handleRemove}>LOG OUT</MenuItems1></> : (<>
+              <MenuItems2><Link to="/Login" style={linkStyleBtnLog}>LOG IN</Link></MenuItems2>
+              <MenuItems1><Link to="/Register" style={linkStyleBtnReg}>REGISTER</Link></MenuItems1>
+              </> )
+            
+            }
             <Link to="/cart">
             <MenuItems>
-            <Badge badgeContent={quantity} color="secondary">
+            <Badge badgeContent={cartTotalQuantity} color="secondary">
             <ShoppingCartIcon />
       </Badge>
             

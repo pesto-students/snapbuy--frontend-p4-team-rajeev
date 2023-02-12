@@ -1,41 +1,52 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, } from 'react-router-dom'
 import { login } from '../redux/apiCalls';
 import { useDispatch, useSelector } from "react-redux";
 import {getUsers}  from '../redux/usersSlice';
 
 
+import './Login.css'
 
 
 const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [roll, setRoll] = useState("");
+  const [roll, setRoll] = useState("shopper");
   const dispatch = useDispatch();
   const { isFetching, error } = useSelector((state) => state.users);
+  const rll = window.localStorage.getItem("token")
+  const cll = window.localStorage.getItem("")
+  const output = JSON.parse(rll)
+  const navigate = useNavigate()
 
   // const initialValues={
     // "email" : "harish2@gmail.com",
     // "password" : "harish1",
     // "role": "shopper"
 // }
+const HandleDropdown = (e) =>{
+  setRoll(e.target.value)
+
+}
 let initialValues={}
 const apicall=(e)=>{
   e.preventDefault();
  initialValues= {
     "email" : username,
     "password" : password,
-    "role": "shopper"
+    "role": roll
 }
-  console.log("Hello World",initialValues)
+ 
   dispatch(getUsers(initialValues))
 }
-const handleClick = (e) => {
-  e.preventDefault();
-  console.log("Hello World",initialValues)
-  login(dispatch(initialValues))
-};
+useEffect(() => {
+  if (rll !== cll) {
+    navigate('/');
+  }
+}, [rll, cll]);
+
+
   return (
     <div className="Auth-form-container">
       <form className="Auth-form">
@@ -60,16 +71,21 @@ const handleClick = (e) => {
             />
           </div>
           <div className="form-group mt-3">
-            <label>Roll</label>
-            <input
-              type="text"
-              className="form-control mt-1"
-              placeholder="Enter Roll"
-              onChange={(e)=>setRoll(e.target.value)}
-            />
+            <label> Select Roll</label>
+          
+             <select className='dropdown' value={roll}  onChange={HandleDropdown}>
+
+             <option value="shopper">shopper</option>
+
+            <option value="seller">seller</option>
+
+
+</select>
+
+
           </div>
-          <div className="d-grid gap-2 mt-3">
-            <button type="submit" className="btn btn-primary" onClick={apicall} disabled={isFetching}>
+          <div className="d-grid gap-2 mt-3"  onClick={apicall} >
+            <button type="submit" className="btn btn-primary"  >
               Submit
             </button>
           

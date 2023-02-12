@@ -8,7 +8,7 @@ import Newsletter from "../Components/Newsletter";
 import { mobile } from "../responsive";
 import { publicRequest } from "../requestMethods";
 import { useEffect, useState } from "react";
-import { addProduct } from "../redux/cartRedux";
+import { addToProduct } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
 
 
@@ -147,9 +147,10 @@ const Product = () => {
       setQuantity(quantity + 1);
     }
   };
-  const handleClick = () =>{
+  const handleAddTOCart = (product) =>{
     dispatch(
-      addProduct({ ...product, quantity, color, size })
+      addToProduct({ ...product, quantity, color, size })
+      // addToProduct(product)
     );
   }
   return (
@@ -188,7 +189,7 @@ const Product = () => {
               <Amount>{quantity}</Amount>
               <Add onClick={() => handleQuantity("inc")} />
             </AmountContainer>
-            <Button onClick={handleClick}>ADD TO CART</Button>
+            <Button onClick={()=>handleAddTOCart(product)}>ADD TO CART</Button>
             
           </AddContainer>
         </InfoContainer>
