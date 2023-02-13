@@ -9,6 +9,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTotals } from '../redux/cartRedux';
 // import Login from '../pages/Login';
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from "reactstrap";
 
 const Container = styled.div`
 height:60px;
@@ -73,6 +79,7 @@ const MenuItems = styled.div`
     font-size: 14px;
     cursor: pointer;
     margin-left: 23px;
+    margin-bottom: 10px;
     border: 1px solid Black;
     padding: 7px 20px;
     display: flex;
@@ -87,8 +94,9 @@ const MenuItems = styled.div`
     font-size: 14px;
     cursor: pointer;
     margin-left: 23px;
+    margin-bottom: 10px;
     border: 1px solid Black;
-    padding: 7px 20px;
+    
     display: flex;
     align-items: center;
     border-radius:5px;
@@ -105,7 +113,7 @@ const MenuItems = styled.div`
   const linkStyleBtnLog = {
     
     textDecoration: "none",
-    color:"black"
+    color:"white"
     
   
   };
@@ -121,7 +129,9 @@ function Navbar() {
   const { cartTotalQuantity } = useSelector((state) => state.cart);
   const cart = useSelector((state) => state.cart);
   const [user,setUser] = useState(false)
- 
+  const [dropdownOpen1, setDropdownOpen1] = useState(false);
+  const [dropdownOpen2, setDropdownOpen2] = useState(false);
+  const [dropdownOpen3, setDropdownOpen3] = useState(false);
   const navigate =useNavigate();
   const rll = window.localStorage.getItem("user")
   const cll = window.localStorage.getItem("")
@@ -131,6 +141,19 @@ function Navbar() {
   const [isDropdownOpend , setDropdownOpen ] = useState(false);
   const [list , setList] = useState([1,2,3])
   const dispatch = useDispatch();
+
+  
+  const toggle3 = () => {
+    setDropdownOpen3(!dropdownOpen3);
+  };
+
+  const onMouseEnter = () => {
+    setDropdownOpen1(true);
+  };
+
+  const onMouseLeave = () => {
+    setDropdownOpen1(false);
+  };
   
   useEffect(() => {
 
@@ -185,8 +208,24 @@ function Navbar() {
         </Center>
         <Right>
             
-        {user ?<> <p><AccountCircleIcon />  {sudo} </p> <MenuItems1 onClick={handleRemove}>LOG OUT</MenuItems1></> : (<>
-              <MenuItems2><Link to="/Login" style={linkStyleBtnLog}>LOG IN</Link></MenuItems2>
+        {user ? <>
+          <Dropdown
+        className="d-inline"
+        isOpen={dropdownOpen3}
+        toggle={toggle3}
+        style={{width:"30%" ,border:'none',padding: '0px',marginBottom:"10px"}}
+      >
+        <DropdownToggle><AccountCircleIcon />  {sudo}</DropdownToggle>
+        <DropdownMenu>
+        <Link to="/profile" style={{textDecoration:"none"}}><DropdownItem >Profile</DropdownItem></Link>
+        <Link to="/cart" style={{textDecoration:"none"}}><DropdownItem>Cart</DropdownItem></Link>
+        <Link to="/order" style={{textDecoration:"none"}}><DropdownItem>Orders</DropdownItem></Link>
+          <DropdownItem onClick={handleRemove}>Log OUT</DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+         {/* <p><AccountCircleIcon />  {sudo} </p> <MenuItems1 onClick={handleRemove}>LOG OUT</MenuItems1> */}
+         </> : (<>
+              <MenuItems1><Link to="/Login" style={linkStyleBtnLog}>LOG IN</Link></MenuItems1>
               <MenuItems1><Link to="/Register" style={linkStyleBtnReg}>REGISTER</Link></MenuItems1>
               </> )
             

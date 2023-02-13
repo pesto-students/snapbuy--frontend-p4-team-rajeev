@@ -22,6 +22,8 @@ import MobileVerification from "./pages/MobileVerification";
 import Success from "./pages/Sucess";
 import ForgotPass from "./pages/ForgotPass";
 import { useSelector } from "react-redux";
+import Profile from "./pages/Profile";
+import Orders from "./pages/Orders";
 
 function App() {
   const user = useSelector((state) => state.user.currentUser);
@@ -40,6 +42,8 @@ function App() {
         <Route path="MobileVerification" element={<MobileVerification />} />
         <Route path="Success" element={<Success />} />
         <Route path="ForgotPass" element={<ForgotPass />} />
+        <Route path="Profile" element={<Profile />} />
+        <Route path="Order" element={<Orders />} />
         <Route path="Login" element={user ? <Navigate replace to="/" /> : <Login/>} >
 
           </Route>
